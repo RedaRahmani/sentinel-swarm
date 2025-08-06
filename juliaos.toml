@@ -1,0 +1,32 @@
+[deps]
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Optimization = "7f7a1694-90dd-40f0-9382-eb1efda571ba"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[project]
+name = "SentinelSwarm"
+version = "1.0.0"
+description = "Autonomous DAO Treasury & Risk Manager powered by JuliaOS"
+authors = ["Sentinel Swarm Team"]
+license = "MIT"
+
+[juliaos]
+framework_version = ">=0.1.0"
+agents_enabled = true
+swarms_enabled = true
+blockchain_adapters = ["solana", "evm"]
+
+[build-system]
+requires = ["julia>=1.9"]
+
+[tools.julia.test]
+timeout = 300

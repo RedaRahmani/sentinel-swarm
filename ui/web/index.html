@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel Swarm - Policy Editor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        input[type="number"], input[type="range"], select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        input[type="range"] {
+            padding: 0;
+        }
+        .range-value {
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+        .dex-selector {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .dex-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast.success {
+            background: #10b981;
+        }
+        .toast.error {
+            background: #ef4444;
+        }
+        .validation-errors {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            color: #dc2626;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Sentinel Swarm Policy Editor</h1>
+        <p class="subtitle">Configure risk management and operational policies for autonomous treasury management</p>
+        
+        <div id="validation-errors" class="validation-errors hidden">
+            <h4>Validation Errors:</h4>
+            <ul id="error-list"></ul>
+        </div>
+        
+        <form id="policy-form">
+            <div class="form-group">
+                <label for="max_daily_var_pct">Maximum Daily VaR (%)</label>
+                <input type="range" id="max_daily_var_pct" min="1" max="20" step="0.5" value="6">
+                <div>Current: <span class="range-value" id="var-value">6.0</span>%</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="min_stable_allocation_pct">Minimum Stablecoin Allocation (%)</label>
+                <input type="range" id="min_stable_allocation_pct" min="10" max="80" step="5" value="35">
+                <div>Current: <span class="range-value" id="stable-value">35</span>%</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Allowed DEXes</label>
+                <div class="dex-selector">
+                    <div class="dex-option">
+                        <input type="checkbox" id="orca" value="Orca" checked>
+                        <label for="orca">Orca</label>
+                    </div>
+                    <div class="dex-option">
+                        <input type="checkbox" id="phoenix" value="Phoenix" checked>
+                        <label for="phoenix">Phoenix</label>
+                    </div>
+                    <div class="dex-option">
+                        <input type="checkbox" id="raydium" value="Raydium">
+                        <label for="raydium">Raydium</label>
+                    </div>
+                    <div class="dex-option">
+                        <input type="checkbox" id="jupiter" value="Jupiter">
+                        <label for="jupiter">Jupiter</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="depeg_alert_bps">Depeg Alert Threshold (basis points)</label>
+                <input type="number" id="depeg_alert_bps" min="10" max="500" value="50">
+                <div style="font-size: 14px; color: #6b7280; margin-top: 5px;">
+                    50 bps = 0.5% price deviation from peg
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="auto_create_proposal" checked>
+                    <label for="auto_create_proposal">Auto-create governance proposals</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="require_multisig_to_execute" checked>
+                    <label for="require_multisig_to_execute">Require multisig to execute proposals</label>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" class="btn-primary" onclick="savePolicy()">Save Policy</button>
+                <button type="button" class="btn-secondary" onclick="testPolicy()">Test Policy</button>
+                <button type="button" class="btn-secondary" onclick="loadDefaults()">Load Defaults</button>
+            </div>
+        </form>
+    </div>
+    
+    <div id="toast" class="toast hidden"></div>
+    
+    <script>
+        // Update range value displays
+        document.getElementById('max_daily_var_pct').addEventListener('input', function() {
+            document.getElementById('var-value').textContent = this.value;
+        });
+        
+        document.getElementById('min_stable_allocation_pct').addEventListener('input', function() {
+            document.getElementById('stable-value').textContent = this.value;
+        });
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.className = `toast ${type}`;
+            }, 3000);
+        }
+        
+        function validatePolicy(policy) {
+            const errors = [];
+            
+            if (policy.max_daily_var_pct < 0 || policy.max_daily_var_pct > 100) {
+                errors.push('Maximum Daily VaR must be between 0% and 100%');
+            }
+            
+            if (policy.min_stable_allocation_pct < 0 || policy.min_stable_allocation_pct > 100) {
+                errors.push('Minimum Stablecoin Allocation must be between 0% and 100%');
+            }
+            
+            if (!Array.isArray(policy.allowed_dexes) || policy.allowed_dexes.length === 0) {
+                errors.push('At least one DEX must be selected');
+            }
+            
+            if (policy.depeg_alert_bps < 0 || policy.depeg_alert_bps > 10000) {
+                errors.push('Depeg Alert Threshold must be between 0 and 10000 basis points');
+            }
+            
+            return errors;
+        }
+        
+        function showValidationErrors(errors) {
+            const errorDiv = document.getElementById('validation-errors');
+            const errorList = document.getElementById('error-list');
+            
+            if (errors.length > 0) {
+                errorList.innerHTML = errors.map(error => `<li>${error}</li>`).join('');
+                errorDiv.classList.remove('hidden');
+            } else {
+                errorDiv.classList.add('hidden');
+            }
+        }
+        
+        function collectPolicyData() {
+            const allowedDexes = [];
+            document.querySelectorAll('.dex-selector input[type="checkbox"]:checked').forEach(cb => {
+                allowedDexes.push(cb.value);
+            });
+            
+            return {
+                max_daily_var_pct: parseFloat(document.getElementById('max_daily_var_pct').value),
+                min_stable_allocation_pct: parseInt(document.getElementById('min_stable_allocation_pct').value),
+                allowed_dexes: allowedDexes,
+                depeg_alert_bps: parseInt(document.getElementById('depeg_alert_bps').value),
+                auto_create_proposal: document.getElementById('auto_create_proposal').checked,
+                require_multisig_to_execute: document.getElementById('require_multisig_to_execute').checked
+            };
+        }
+        
+        function savePolicy() {
+            const policy = collectPolicyData();
+            const errors = validatePolicy(policy);
+            
+            showValidationErrors(errors);
+            
+            if (errors.length > 0) {
+                showToast('Please fix validation errors before saving', 'error');
+                return;
+            }
+            
+            try {
+                // In a real implementation, this would send to a backend
+                // For demo, we'll save to localStorage and log to console
+                localStorage.setItem('sentinel_policy', JSON.stringify(policy, null, 2));
+                console.log('Policy saved:', JSON.stringify(policy, null, 2));
+                
+                showToast('Policy saved successfully!');
+            } catch (error) {
+                showToast('Failed to save policy: ' + error.message, 'error');
+            }
+        }
+        
+        function testPolicy() {
+            const policy = collectPolicyData();
+            const errors = validatePolicy(policy);
+            
+            showValidationErrors(errors);
+            
+            if (errors.length > 0) {
+                showToast('Policy has validation errors', 'error');
+                return;
+            }
+            
+            // Simulate policy test
+            showToast('Policy test passed! Configuration is valid.');
+            console.log('Testing policy:', policy);
+        }
+        
+        function loadDefaults() {
+            document.getElementById('max_daily_var_pct').value = 6;
+            document.getElementById('var-value').textContent = '6.0';
+            
+            document.getElementById('min_stable_allocation_pct').value = 35;
+            document.getElementById('stable-value').textContent = '35';
+            
+            document.getElementById('depeg_alert_bps').value = 50;
+            document.getElementById('auto_create_proposal').checked = true;
+            document.getElementById('require_multisig_to_execute').checked = true;
+            
+            // Reset DEX selections
+            document.querySelectorAll('.dex-selector input[type="checkbox"]').forEach(cb => {
+                cb.checked = ['Orca', 'Phoenix'].includes(cb.value);
+            });
+            
+            showValidationErrors([]);
+            showToast('Default policy loaded');
+        }
+        
+        // Load saved policy on page load
+        window.addEventListener('load', function() {
+            const saved = localStorage.getItem('sentinel_policy');
+            if (saved) {
+                try {
+                    const policy = JSON.parse(saved);
+                    
+                    document.getElementById('max_daily_var_pct').value = policy.max_daily_var_pct || 6;
+                    document.getElementById('var-value').textContent = policy.max_daily_var_pct || 6;
+                    
+                    document.getElementById('min_stable_allocation_pct').value = policy.min_stable_allocation_pct || 35;
+                    document.getElementById('stable-value').textContent = policy.min_stable_allocation_pct || 35;
+                    
+                    document.getElementById('depeg_alert_bps').value = policy.depeg_alert_bps || 50;
+                    document.getElementById('auto_create_proposal').checked = policy.auto_create_proposal !== false;
+                    document.getElementById('require_multisig_to_execute').checked = policy.require_multisig_to_execute !== false;
+                    
+                    // Set DEX selections
+                    document.querySelectorAll('.dex-selector input[type="checkbox"]').forEach(cb => {
+                        cb.checked = (policy.allowed_dexes || []).includes(cb.value);
+                    });
+                    
+                } catch (error) {
+                    console.error('Failed to load saved policy:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

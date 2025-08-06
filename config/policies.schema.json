@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "max_daily_var_pct": { "type":"number", "minimum": 0, "maximum": 100 },
+    "min_stable_allocation_pct": { "type":"number", "minimum": 0, "maximum": 100 },
+    "allowed_dexes": { "type":"array", "items": { "type":"string" } },
+    "depeg_alert_bps": { "type":"integer", "minimum": 0, "maximum": 10000 },
+    "auto_create_proposal": { "type":"boolean" },
+    "require_multisig_to_execute": { "type":"boolean" }
+  },
+  "required": ["max_daily_var_pct","min_stable_allocation_pct","allowed_dexes","depeg_alert_bps"],
+  "additionalProperties": false
+}

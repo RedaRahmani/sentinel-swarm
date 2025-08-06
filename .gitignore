@@ -1,0 +1,32 @@
+# Environment files with secrets
+.env
+
+# Build artifacts
+chains/ts-cli/node_modules/
+chains/ts-cli/dist/
+chains/ts-cli/package-lock.json
+
+# Julia artifacts
+Manifest.toml
+
+# Demo artifacts (optional)
+data/artifacts/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*~
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+.env.sample

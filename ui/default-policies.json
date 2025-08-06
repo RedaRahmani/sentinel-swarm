@@ -1,0 +1,8 @@
+{
+  "max_daily_var_pct": 6.0,
+  "min_stable_allocation_pct": 35.0,
+  "allowed_dexes": ["Orca","Phoenix"],
+  "depeg_alert_bps": 50,
+  "auto_create_proposal": true,
+  "require_multisig_to_execute": true
+}

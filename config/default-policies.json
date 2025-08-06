@@ -1,0 +1,301 @@
+{
+  "policy_version": "1.0",
+  "last_updated": "2024-01-15",
+  "description": "Default risk management and operational policies for Sentinel Swarm autonomous treasury management",
+  
+  "risk_policies": {
+    "portfolio_limits": {
+      "max_single_asset_allocation_pct": 40.0,
+      "min_stablecoin_allocation_pct": 20.0,
+      "max_volatile_allocation_pct": 60.0,
+      "max_leverage_ratio": 1.5,
+      "min_liquidity_buffer_pct": 15.0
+    },
+    
+    "var_constraints": {
+      "max_portfolio_var_95_pct": 8.0,
+      "target_portfolio_var_95_pct": 5.0,
+      "var_breach_threshold_pct": 10.0,
+      "var_calculation_horizon_days": 30,
+      "confidence_level": 0.95
+    },
+    
+    "volatility_limits": {
+      "max_portfolio_volatility_pct": 25.0,
+      "max_individual_asset_volatility_pct": 80.0,
+      "volatility_lookback_days": 90,
+      "volatility_threshold_for_review": 50.0
+    },
+    
+    "correlation_constraints": {
+      "max_asset_correlation": 0.85,
+      "correlation_lookback_days": 180,
+      "correlation_threshold_for_warning": 0.75,
+      "diversification_score_min": 0.6
+    },
+    
+    "concentration_limits": {
+      "max_sector_concentration_pct": 50.0,
+      "max_protocol_concentration_pct": 30.0,
+      "max_chain_concentration_pct": 70.0,
+      "concentration_review_threshold_pct": 25.0
+    }
+  },
+  
+  "execution_policies": {
+    "transaction_limits": {
+      "max_single_transaction_value_usd": 50000,
+      "max_daily_transaction_volume_usd": 200000,
+      "max_transactions_per_hour": 5,
+      "min_time_between_transactions_minutes": 10
+    },
+    
+    "slippage_controls": {
+      "max_slippage_bps": 100,
+      "warning_slippage_bps": 50,
+      "max_price_impact_bps": 200,
+      "liquidity_threshold_check": true
+    },
+    
+    "approval_requirements": {
+      "auto_approve_under_usd": 10000,
+      "requires_dao_vote_over_usd": 100000,
+      "requires_multisig_over_usd": 50000,
+      "emergency_override_enabled": true
+    },
+    
+    "execution_timing": {
+      "market_hours_only": false,
+      "avoid_high_volatility_periods": true,
+      "max_execution_time_minutes": 30,
+      "retry_attempts": 3
+    }
+  },
+  
+  "compliance_policies": {
+    "aml_screening": {
+      "enabled": true,
+      "screen_all_counterparties": true,
+      "sanctions_list_check": true,
+      "suspicious_activity_threshold_usd": 25000,
+      "report_suspicious_activity": true
+    },
+    
+    "regulatory_compliance": {
+      "kyc_required_over_usd": 10000,
+      "transaction_reporting_threshold_usd": 10000,
+      "cross_border_restrictions": true,
+      "privacy_coin_restrictions": true
+    },
+    
+    "audit_requirements": {
+      "maintain_audit_trail": true,
+      "audit_retention_days": 2555,
+      "real_time_logging": true,
+      "immutable_records": true
+    }
+  },
+  
+  "operational_policies": {
+    "monitoring": {
+      "continuous_monitoring": true,
+      "alert_thresholds": {
+        "portfolio_value_change_pct": 5.0,
+        "asset_price_change_pct": 15.0,
+        "var_breach_multiplier": 1.5,
+        "liquidity_drop_pct": 20.0
+      },
+      "notification_channels": ["email", "slack", "webhook"],
+      "escalation_levels": 3
+    },
+    
+    "emergency_procedures": {
+      "automatic_halt_triggers": {
+        "portfolio_loss_pct": 20.0,
+        "market_crash_threshold": -30.0,
+        "liquidity_crisis_threshold": 0.1,
+        "system_error_rate_pct": 10.0
+      },
+      "emergency_contacts": ["dao_treasury_committee", "technical_team"],
+      "fallback_procedures": ["manual_override", "emergency_liquidation"]
+    },
+    
+    "performance_standards": {
+      "max_response_time_seconds": 30,
+      "min_uptime_pct": 99.9,
+      "max_error_rate_pct": 1.0,
+      "data_freshness_max_age_minutes": 5
+    }
+  },
+  
+  "asset_policies": {
+    "allowed_assets": {
+      "major_cryptocurrencies": ["BTC", "ETH", "SOL"],
+      "stablecoins": ["USDC", "USDT", "DAI", "FRAX"],
+      "defi_tokens": ["UNI", "AAVE", "COMP", "MKR"],
+      "governance_tokens": ["restricted"],
+      "meme_coins": ["prohibited"]
+    },
+    
+    "asset_quality_requirements": {
+      "min_market_cap_usd": 100000000,
+      "min_daily_volume_usd": 10000000,
+      "min_liquidity_usd": 50000000,
+      "max_age_days": 365,
+      "security_audit_required": true
+    },
+    
+    "protocol_restrictions": {
+      "experimental_protocols": "prohibited",
+      "unaudited_protocols": "prohibited",
+      "bridge_protocols": "limited",
+      "lending_protocols": "approved_only"
+    }
+  },
+  
+  "governance_policies": {
+    "proposal_requirements": {
+      "min_discussion_period_hours": 24,
+      "min_voting_period_hours": 72,
+      "execution_delay_hours": 24,
+      "quorum_threshold_pct": 20,
+      "approval_threshold_pct": 60
+    },
+    
+    "voting_mechanics": {
+      "token_weighted_voting": true,
+      "delegation_allowed": true,
+      "quadratic_voting": false,
+      "conviction_voting": false
+    },
+    
+    "emergency_governance": {
+      "emergency_quorum_threshold_pct": 10,
+      "emergency_approval_threshold_pct": 75,
+      "emergency_execution_delay_hours": 6,
+      "emergency_proposal_expiry_hours": 48
+    }
+  },
+  
+  "technical_policies": {
+    "security_requirements": {
+      "multi_signature_required": true,
+      "hardware_wallet_storage": true,
+      "regular_security_audits": true,
+      "penetration_testing_frequency_months": 6
+    },
+    
+    "data_management": {
+      "data_encryption_required": true,
+      "backup_frequency_hours": 6,
+      "disaster_recovery_plan": true,
+      "data_retention_policy_days": 2555
+    },
+    
+    "infrastructure": {
+      "redundant_systems": true,
+      "load_balancing": true,
+      "auto_scaling": true,
+      "monitoring_coverage_pct": 100
+    }
+  },
+  
+  "notification_policies": {
+    "alert_types": {
+      "critical": {
+        "response_time_minutes": 5,
+        "channels": ["phone", "email", "slack"],
+        "escalation_enabled": true
+      },
+      "warning": {
+        "response_time_minutes": 30,
+        "channels": ["email", "slack"],
+        "escalation_enabled": false
+      },
+      "info": {
+        "response_time_minutes": 120,
+        "channels": ["slack"],
+        "escalation_enabled": false
+      }
+    },
+    
+    "notification_content": {
+      "include_context": true,
+      "include_recommendations": true,
+      "include_metrics": true,
+      "encrypt_sensitive_data": true
+    }
+  },
+  
+  "validation_rules": {
+    "pre_execution_checks": [
+      "balance_sufficiency",
+      "slippage_tolerance",
+      "liquidity_availability",
+      "price_sanity",
+      "risk_compliance",
+      "regulatory_compliance"
+    ],
+    
+    "post_execution_validation": [
+      "transaction_success",
+      "expected_outcomes",
+      "cost_efficiency",
+      "risk_profile_update",
+      "compliance_record_update"
+    ],
+    
+    "continuous_validation": [
+      "portfolio_drift_monitoring",
+      "risk_metric_tracking",
+      "performance_benchmarking",
+      "compliance_status_monitoring"
+    ]
+  },
+  
+  "emergency_scenarios": {
+    "market_crash": {
+      "trigger_threshold_pct": -20,
+      "response_actions": ["increase_stablecoin_allocation", "reduce_leverage", "halt_new_positions"],
+      "monitoring_frequency_minutes": 5,
+      "escalation_threshold_pct": -30
+    },
+    
+    "liquidity_crisis": {
+      "trigger_liquidity_ratio": 0.15,
+      "response_actions": ["liquidate_illiquid_positions", "increase_cash_reserves"],
+      "monitoring_frequency_minutes": 10,
+      "escalation_threshold_ratio": 0.05
+    },
+    
+    "smart_contract_exploit": {
+      "trigger_events": ["unusual_transaction_pattern", "abnormal_balance_change"],
+      "response_actions": ["halt_affected_protocol", "emergency_withdrawal"],
+      "monitoring_frequency_minutes": 1,
+      "manual_override_required": true
+    },
+    
+    "oracle_failure": {
+      "trigger_conditions": ["price_deviation_excessive", "oracle_offline"],
+      "response_actions": ["use_backup_oracles", "halt_price_sensitive_operations"],
+      "monitoring_frequency_minutes": 2,
+      "fallback_data_sources": ["backup_oracles", "manual_pricing"]
+    }
+  },
+  
+  "configuration_metadata": {
+    "policy_author": "Sentinel Swarm Development Team",
+    "review_frequency_days": 30,
+    "next_review_date": "2024-02-15",
+    "version_history": [
+      {
+        "version": "1.0",
+        "date": "2024-01-15",
+        "changes": "Initial policy configuration",
+        "approved_by": "DAO Treasury Committee"
+      }
+    ],
+    "environment": "production",
+    "schema_version": "1.0"
+  }
+}

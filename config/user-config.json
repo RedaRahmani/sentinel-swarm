@@ -1,0 +1,13 @@
+{
+    "auto_approve_dev": true,
+    "max_proposal_value_usd": 50000,
+    "execution_mode": "simulation",
+    "user_preferences": {
+        "detailed_logging": true,
+        "notifications_enabled": true,
+        "performance_monitoring": true
+    },
+    "environment": "development",
+    "devnet_testing": true,
+    "monitoring_interval_minutes": 60
+}
