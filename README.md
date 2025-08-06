@@ -82,15 +82,28 @@ julia --project=. scripts/trigger_alert.jl
                                                └─────────────────┘
 ```
 
-### Agent Responsibilities
+### Detailed Agent Responsibilities
 
-- **Observer**: Monitors portfolio balances, oracle prices, pool liquidity
-- **Simulator**: Runs Monte Carlo VaR, AMM slippage models, optimization
-- **Analyst**: LLM-powered analysis and recommendation generation
-- **Risk Officer**: Enforces policy constraints and risk limits
-- **Compliance**: AML/sanctions screening and regulatory checks
-- **Proposal Writer**: Constructs Solana Realms governance proposals
-- **Executor**: Simulates and submits proposals to devnet/mainnet
+1. **Config Agent**: Loads global variables like wallet keys, realm IDs, and RPC endpoints. This ensures all agents share the same context.
+
+2. **Observation Agent**: Connects to Solana Devnet to fetch live market data and DAO treasury balances.
+
+3. **Risk Simulator**: Computes 24-hour Value at Risk (VaR) to flag volatility and unstable assets.
+
+4. **Analyst Agent**: Uses GPT-4o to strategize treasury actions, such as:
+   - “Increase stablecoin reserves”
+   - “Hold position”
+   - “Reduce exposure to volatile assets”
+
+5. **Risk Officer Agent**: Validates the Analyst’s suggestions against DAO policies. For example, if VaR exceeds 50%, it raises a flag and can reject risky strategies.
+
+6. **Compliance Agent**: Reviews policy conformance and assigns a compliance risk score.
+
+7. **Proposal Writer**: Converts actions into Solana governance instructions. In demo mode, it uses a fallback memo for placeholder addresses.
+
+8. **Bridge Agent**: Interfaces with a TypeScript CLI to translate Julia proposals into JSON for dry-run simulation or on-chain posting.
+
+9. **Executor Agent**: Simulates transactions, confirms compute usage, and saves artifacts — completing the full governance pipeline.
 
 
 ## 📊 Risk Models
