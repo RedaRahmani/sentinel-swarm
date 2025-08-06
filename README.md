@@ -2,6 +2,11 @@
 
 **Built with JuliaOS** • AI-native agents + swarms + multi-chain intelligence
 
+## 🎥 Project Explanation and Demo
+
+- [Project Explanation Video](https://www.loom.com/share/980410415c3f4c51936dd3ff779df8ac?sid=d8fb8923-f589-4861-a470-5f35d5ec8d5c): A detailed walkthrough of the Sentinel Swarm project.
+- [Demo Video](https://www.loom.com/share/2c4367d67db0445b91a3c45709372191?sid=5287bd8f-a795-4f66-beb3-addce41917e4): A live demonstration of the Sentinel Swarm in action.
+
 
 
 ## 🎯 Executive Summary
@@ -222,7 +227,6 @@ end
   • data/artifacts/prop_abc123def/metrics.json
   • data/artifacts/prop_abc123def/proposal.json
 ```
-
 
 ## 🏆 Acknowledgments
 
