@@ -92,24 +92,6 @@ julia --project=. scripts/trigger_alert.jl
 - **Proposal Writer**: Constructs Solana Realms governance proposals
 - **Executor**: Simulates and submits proposals to devnet/mainnet
 
-## 🎛️ Policy Configuration
-
-Edit policies through the no-code builder or directly in `ui/default-policies.json`:
-
-```json
-{
-  "max_daily_var_pct": 6.0,
-  "min_stable_allocation_pct": 35.0,
-  "allowed_dexes": ["Orca", "Phoenix", "Jupiter"],
-  "depeg_alert_bps": 50,
-  "auto_create_proposal": true,
-  "require_multisig_to_execute": true,
-  "incident_mode_triggers": {
-    "oracle_staleness_minutes": 30,
-    "liquidity_drop_pct": 25
-  }
-}
-```
 
 ## 📊 Risk Models
 
@@ -213,7 +195,7 @@ end
 ✅ Proposal Writer: Realms proposal created
 ✅ Executor: Transaction dry-run successful
 
-🎯 Final Result:
+🎯 Expected Final Result:
 {
   "posted": true,
   "proposalId": "prop_abc123def",
@@ -228,70 +210,6 @@ end
   • data/artifacts/prop_abc123def/proposal.json
 ```
 
-## 📈 Performance Benchmarks
-
-- **Monitoring tick**: < 5s for full portfolio snapshot
-- **VaR simulation**: < 1.5s for 10k trials (laptop)
-- **Proposal generation**: < 1s for instruction serialization
-- **Memory footprint**: < 1GB during simulations
-
-## 🛠️ Development
-
-### Adding New Agents
-
-```julia
-# Create new agent in agents/
-using JuliaOS
-
-my_agent = Agent(
-    name="MyAgent",
-    tools=[:my_tool],
-    run=(ctx) -> begin
-        # Agent logic here
-        return result
-    end
-)
-```
-
-### Adding Chain Adapters
-
-```julia
-# Implement required interface in chains/
-include("base_adapter.jl")
-
-struct MyChainAdapter <: ChainAdapter
-    # Implementation
-end
-```
-
-## 🔐 Security & Compliance
-
-- **Key Management**: HSM/hardware wallet integration for production
-- **Policy Sandboxing**: Executor cannot bypass governance requirements
-- **Audit Trails**: Complete event logging with reproducible simulation seeds
-- **Compliance**: Configurable AML/sanctions screening
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for guidelines.
-
-### Bounty Submission Checklist
-
-- [x] Public GitHub repository
-- [x] MIT-compatible license
-- [x] Comprehensive README with setup instructions
-- [x] Working demo with JuliaOS agents and swarms
-- [x] Solana integration with Realms proposals
-- [x] Test suite with >80% coverage
-- [x] Clear documentation and architecture diagrams
-
-## 📚 Documentation
-
-- [Product Specification](./docs/PRODUCT_SPEC.md)
-- [Architecture Guide](./docs/ARCHITECTURE.md)
-- [Policy Configuration](./docs/POLICIES.md)
-- [Demo Script](./docs/DEMO_SCRIPT.md)
-- [Contributing Guide](./docs/CONTRIBUTING.md)
 
 ## 🏆 Acknowledgments
 
